@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f3f2ef;
+    --foreground: #191919;
+    --card: #ffffff;
+    --card-foreground: #191919;
+    --border: #e0e0e0;
+    --input: #ffffff;
+    --primary: #0a66c2;
+    --primary-foreground: #ffffff;
+    --secondary: #ebebeb;
+    --secondary-foreground: #191919;
+    --accent: #004182;
+  }
+
+  .dark {
+    --background: #1d2226;
+    --foreground: #ffffff;
+    --card: #000000;
+    --card-foreground: #ffffff;
+    --border: #373a3d;
+    --input: #1d2226;
+    --primary: #0a66c2;
+    --primary-foreground: #ffffff;
+    --secondary: #404040;
+    --secondary-foreground: #ffffff;
+    --accent: #70b5f9;
+  }
+}
+
+@layer utilities {
+  .linkedin-scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-linkedin-darkGray scrollbar-track-transparent;
+  }
+  
+  .dark .linkedin-scrollbar {
+    @apply scrollbar-thumb-gray-500;
+  }
+}
+
+@layer components {
+  .linkedin-card {
+    @apply bg-white dark:bg-linkedin-dark rounded-lg shadow-md overflow-hidden;
+  }
+
+  .linkedin-button-primary {
+    @apply bg-linkedin-blue hover:bg-linkedin-darkBlue text-white px-4 py-2 rounded-full font-medium transition-colors duration-200;
+  }
+
+  .linkedin-button-secondary {
+    @apply bg-transparent hover:bg-linkedin-hoverBg dark:hover:bg-linkedin-hoverBgDark text-linkedin-blue dark:text-linkedin-lightBlue border border-linkedin-blue dark:border-linkedin-lightBlue px-4 py-2 rounded-full font-medium transition-colors duration-200;
+  }
+
+  .linkedin-button-ghost {
+    @apply bg-transparent hover:bg-linkedin-hoverBg dark:hover:bg-linkedin-hoverBgDark text-gray-500 dark:text-gray-400 px-4 py-2 rounded-full font-medium transition-colors duration-200;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+}
