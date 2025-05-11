@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import Header from "@/components/Header";
+import MainLayout from "@/components/MainLayout";
 import Image from "next/image";
 import { PaperAirplaneIcon, FaceSmileIcon, PaperClipIcon, PhotoIcon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
@@ -29,6 +29,7 @@ interface Conversation {
     text: string;
     timestamp: Date;
     isRead: boolean;
+    senderId: string;
   };
   messages: Message[];
 }
@@ -57,6 +58,7 @@ const CONVERSATIONS: Conversation[] = [
       text: "Yes, I'll check the proposal and get back to you!",
       timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
       isRead: true,
+      senderId: "current-user",
     },
     messages: [
       {
@@ -104,6 +106,7 @@ const CONVERSATIONS: Conversation[] = [
       text: "Let me know if you need any help with the code review.",
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3), // 3 hours ago
       isRead: false,
+      senderId: "3",
     },
     messages: [
       {
@@ -144,6 +147,7 @@ const CONVERSATIONS: Conversation[] = [
       text: "I'd love to connect you with our design team for the marketing campaign.",
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
       isRead: true,
+      senderId: "current-user",
     },
     messages: [
       {
@@ -226,6 +230,7 @@ export default function MessagingContent() {
         text: newMessage.trim(),
         timestamp: new Date(),
         isRead: false,
+        senderId: CURRENT_USER.id,
       },
     };
 
@@ -257,9 +262,8 @@ export default function MessagingContent() {
   };
 
   return (
-    <div className="min-h-screen bg-linkedin-gray dark:bg-linkedin-dark">
-      <Header />
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <MainLayout>
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-150px)]">
           {/* Conversation list */}
           <div className="md:col-span-1 linkedin-card overflow-hidden flex flex-col">
@@ -431,7 +435,7 @@ export default function MessagingContent() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 } 

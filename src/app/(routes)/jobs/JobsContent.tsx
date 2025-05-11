@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/components/Header";
+import MainLayout from "@/components/MainLayout";
+import Image from "next/image";
 import { MagnifyingGlassIcon, BriefcaseIcon, BookmarkIcon } from "@heroicons/react/24/outline";
 import { BookmarkIcon as SolidBookmarkIcon } from "@heroicons/react/24/solid";
 
@@ -82,9 +83,8 @@ export default function JobsContent() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Header />
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <MainLayout>
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Search bar */}
         <div className="mb-8">
           <div className="flex items-center max-w-3xl mx-auto bg-white rounded-lg shadow p-2">
@@ -239,7 +239,7 @@ export default function JobsContent() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 } 

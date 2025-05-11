@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import MainLayout from "@/components/MainLayout";
 import { 
   BellIcon, 
   UserPlusIcon, 
@@ -99,7 +100,7 @@ const DUMMY_NOTIFICATIONS: Notification[] = [
     actor: {
       id: "company-1",
       name: "Google",
-      profilePicture: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png",
+      profilePicture: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
     target: {
       id: "job-1",
@@ -217,106 +218,108 @@ export default function NotificationsContent() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white dark:bg-linkedin-darker rounded-lg shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Notifications</h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              You have {unreadCount} unread notifications
-            </p>
-          </div>
-          <div className="flex space-x-2">
-            <button 
-              onClick={() => setFilter("all")}
-              className={`px-3 py-1 rounded-full text-sm ${
-                filter === "all" 
-                  ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" 
-                  : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-              }`}
-            >
-              All
-            </button>
-            <button 
-              onClick={() => setFilter("unread")}
-              className={`px-3 py-1 rounded-full text-sm ${
-                filter === "unread" 
-                  ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" 
-                  : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-              }`}
-            >
-              Unread
-            </button>
-            {unreadCount > 0 && (
+    <MainLayout>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white dark:bg-linkedin-darker rounded-lg shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Notifications</h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                You have {unreadCount} unread notifications
+              </p>
+            </div>
+            <div className="flex space-x-2">
               <button 
-                onClick={markAllAsRead}
-                className="px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                onClick={() => setFilter("all")}
+                className={`px-3 py-1 rounded-full text-sm ${
+                  filter === "all" 
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" 
+                    : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                }`}
               >
-                Mark all as read
+                All
               </button>
+              <button 
+                onClick={() => setFilter("unread")}
+                className={`px-3 py-1 rounded-full text-sm ${
+                  filter === "unread" 
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100" 
+                    : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                }`}
+              >
+                Unread
+              </button>
+              {unreadCount > 0 && (
+                <button 
+                  onClick={markAllAsRead}
+                  className="px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  Mark all as read
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div>
+            {displayedNotifications.length === 0 ? (
+              <div className="p-10 text-center">
+                <BellIcon className="h-12 w-12 mx-auto text-gray-400" />
+                <p className="mt-2 text-gray-500 dark:text-gray-400">No notifications to display</p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                {displayedNotifications.map((notification) => (
+                  <li 
+                    key={notification.id} 
+                    className={`flex p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
+                      !notification.isRead ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                    }`}
+                    onClick={() => markAsRead(notification.id)}
+                  >
+                    <div className="flex-shrink-0 mr-4">
+                      <div className="relative">
+                        <Image
+                          src={notification.actor.profilePicture}
+                          alt={notification.actor.name}
+                          width={48}
+                          height={48}
+                          className="h-12 w-12 rounded-full object-cover"
+                        />
+                        <div className="absolute -bottom-1 -right-1 p-1 rounded-full bg-white dark:bg-gray-800">
+                          {getNotificationIcon(notification.type)}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-medium ${!notification.isRead ? "text-blue-800 dark:text-blue-300" : "text-gray-900 dark:text-white"}`}>
+                        {getNotificationText(notification)}
+                      </p>
+                      {notification.content && notification.type === "comment" && (
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 border-l-2 border-gray-300 dark:border-gray-600 pl-2">
+                          "{notification.content}"
+                        </p>
+                      )}
+                      <div className="mt-1 flex items-center">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
+                        </p>
+                        {!notification.isRead && (
+                          <span className="ml-2 inline-block h-2 w-2 rounded-full bg-blue-600"></span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 self-start ml-2">
+                      <button className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <EllipsisHorizontalIcon className="h-5 w-5 text-gray-500" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>
-
-        <div>
-          {displayedNotifications.length === 0 ? (
-            <div className="p-10 text-center">
-              <BellIcon className="h-12 w-12 mx-auto text-gray-400" />
-              <p className="mt-2 text-gray-500 dark:text-gray-400">No notifications to display</p>
-            </div>
-          ) : (
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-              {displayedNotifications.map((notification) => (
-                <li 
-                  key={notification.id} 
-                  className={`flex p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                    !notification.isRead ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                  }`}
-                  onClick={() => markAsRead(notification.id)}
-                >
-                  <div className="flex-shrink-0 mr-4">
-                    <div className="relative">
-                      <Image
-                        src={notification.actor.profilePicture}
-                        alt={notification.actor.name}
-                        width={48}
-                        height={48}
-                        className="h-12 w-12 rounded-full object-cover"
-                      />
-                      <div className="absolute -bottom-1 -right-1 p-1 rounded-full bg-white dark:bg-gray-800">
-                        {getNotificationIcon(notification.type)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium ${!notification.isRead ? "text-blue-800 dark:text-blue-300" : "text-gray-900 dark:text-white"}`}>
-                      {getNotificationText(notification)}
-                    </p>
-                    {notification.content && notification.type === "comment" && (
-                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 border-l-2 border-gray-300 dark:border-gray-600 pl-2">
-                        "{notification.content}"
-                      </p>
-                    )}
-                    <div className="mt-1 flex items-center">
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
-                      </p>
-                      {!notification.isRead && (
-                        <span className="ml-2 inline-block h-2 w-2 rounded-full bg-blue-600"></span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0 self-start ml-2">
-                    <button className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
-                      <EllipsisHorizontalIcon className="h-5 w-5 text-gray-500" />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
       </div>
-    </div>
+    </MainLayout>
   );
 } 

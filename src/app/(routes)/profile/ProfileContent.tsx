@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/components/Header";
+import MainLayout from "@/components/MainLayout";
 import Image from "next/image";
 import { PencilIcon, BriefcaseIcon, AcademicCapIcon } from "@heroicons/react/24/outline";
 
@@ -58,9 +58,8 @@ export default function ProfileContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Header />
-      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6">
+    <MainLayout>
+      <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6">
         {/* Profile Header */}
         <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
           <div className="bg-blue-800 h-40 relative">
@@ -183,7 +182,7 @@ export default function ProfileContent() {
             ))}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 } 

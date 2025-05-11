@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/components/Header";
+import MainLayout from "@/components/MainLayout";
 import Image from "next/image";
 import Link from "next/link";
 import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/24/outline";
@@ -119,9 +119,8 @@ export default function NetworkContent() {
   };
 
   return (
-    <div className="min-h-screen bg-linkedin-gray dark:bg-linkedin-dark">
-      <Header />
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <MainLayout>
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left sidebar */}
           <div className="lg:col-span-1">
@@ -297,7 +296,7 @@ export default function NetworkContent() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </MainLayout>
   );
 } 
